@@ -1,6 +1,11 @@
 from rest_framework import viewsets
 from core.models import Cliente, Projeto, Atividade
-from .serializers import ClienteModelSerializer, ProjetoModelSerializer, AtividadeModelSerializer
+from .serializers import (
+    ClienteModelSerializer,
+    ProjetoModelSerializer,
+    AtividadeModelSerializer,
+)
+
 
 class ClienteModelViewSet(viewsets.ModelViewSet):
     serializer_class = ClienteModelSerializer

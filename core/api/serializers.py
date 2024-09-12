@@ -6,18 +6,18 @@ class ClienteModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cliente
-        fields = '__all__'
+        fields = "__all__"
 
 
 class AtividadeModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Atividade
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ProjetoModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Projeto
-        fields = '__all__'
+        fields = "__all__"
