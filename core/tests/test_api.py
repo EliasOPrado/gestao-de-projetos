@@ -7,6 +7,12 @@ from core.models import Cliente, Projeto, Atividade
 
 
 class TestApi(APITestCase):
+    """
+    Django REST Framework APITestCase.
+
+    This class comes with different functionalities to mimics client
+    requests and asserts.
+    """
 
     def setUp(self):
         """Initial data"""

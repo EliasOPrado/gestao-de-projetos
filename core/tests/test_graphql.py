@@ -7,6 +7,12 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class TestGraphql(TestCase):
+    """
+    Django TestCase.
+
+    This class comes with different functionalities to mimics client
+    requests and asserts.
+    """
 
     def setUp(self):
         """Initial data"""
@@ -28,12 +34,14 @@ class TestGraphql(TestCase):
         self.atividade1.save()
 
     def get_object_or_none(self, model_class, **kwargs):
+        # Checks if a specific object exists or returns None
         try:
             return model_class.objects.get(**kwargs)
         except ObjectDoesNotExist:
             return None
 
     def test_all_clientes(self):
+        # Test if returns all clientes
         query = """
             query {
                 allClientes  {
@@ -55,7 +63,8 @@ class TestGraphql(TestCase):
         self.assertEqual(content["allClientes"][0]["email"], self.cliente1.email)
         self.assertEqual(content["allClientes"][0]["telefone"], self.cliente1.telefone)
 
-    def test_get_user_by_id(self):
+    def test_get_cliente_by_id(self):
+        # Test if is possible get cliente by id
         query = f"""
             query {{
                 getCliente(id: {self.cliente1.id}) {{
@@ -77,6 +86,7 @@ class TestGraphql(TestCase):
         self.assertEqual(content["getCliente"]["telefone"], self.cliente1.telefone)
 
     def test_get_projetos_by_cliente_id(self):
+        # Test get projetos by cliente id
         query = f"""
             query {{
                 getProjetosByClienteId(clienteId:{self.cliente1.id}){{
@@ -107,6 +117,7 @@ class TestGraphql(TestCase):
         )
 
     def test_create_cliente(self):
+        # Test creating a cliente 
         query = """
             mutation {
                 createCliente(input: {
@@ -137,6 +148,7 @@ class TestGraphql(TestCase):
         )
 
     def test_update_cliente(self):
+        # Test updating a cliente
         query = f"""
             mutation {{
                 updateCliente(id: {self.cliente1.id}, input: {{
@@ -171,6 +183,7 @@ class TestGraphql(TestCase):
         )
 
     def test_delete_cliente(self):
+        # Test deleting a cliente
         query = f"""
             mutation {{
                 deleteCliente(id: {self.cliente1.id}) {{
@@ -190,6 +203,7 @@ class TestGraphql(TestCase):
         self.assertEqual(content["deleteCliente"]["success"], True)
 
     def test_all_projetos(self):
+        # Test if all projects are being returned
         query = """
             query {
                 allProjetos{
@@ -228,6 +242,7 @@ class TestGraphql(TestCase):
         )
 
     def test_get_atividades_by_projeto_id(self):
+        # Test get atividade by projeto id
         query = f"""
             query {{
                 getAtividadesByProjetoId(projetoId: {self.projeto1.id}) {{
@@ -272,6 +287,7 @@ class TestGraphql(TestCase):
         )
 
     def test_create_projeto(self):
+        # Test creating a projeto
         query = f"""
                 mutation {{
                     createProjeto(input: {{
@@ -309,6 +325,7 @@ class TestGraphql(TestCase):
         )
 
     def test_update_projeto(self):
+        # Test updating a projeto
         query = f"""
             mutation {{
                 updateProjeto(id: {self.projeto1.id}, input: {{
@@ -357,6 +374,7 @@ class TestGraphql(TestCase):
         )
 
     def test_delete_projeto(self):
+        # Test deleting a projeto
         query = f"""
             mutation {{
                 deleteProjeto(id: {self.projeto1.id}) {{
@@ -376,6 +394,7 @@ class TestGraphql(TestCase):
         self.assertEqual(content["deleteProjeto"]["success"], True)
 
     def test_all_atividades(self):
+        # Test returning all atividades
         query = """
             query {
                 allAtividades{
@@ -413,7 +432,8 @@ class TestGraphql(TestCase):
             self.atividade1.prazo.strftime("%Y-%m-%d"),
         )
 
-    def testget_atividades_by_projeto_id(self):
+    def test_get_atividades_by_projeto_id(self):
+        # Test get atividades by projeto id
         query = f"""
             query {{
                 getAtividadesByProjetoId(projetoId:{self.projeto1.id}){{
@@ -447,6 +467,7 @@ class TestGraphql(TestCase):
         )
 
     def test_create_atividade(self):
+        # Test creating atividade
         query = f"""
                 mutation {{
                     createAtividade(input: {{
@@ -480,6 +501,7 @@ class TestGraphql(TestCase):
         self.assertEqual(content["createAtividade"]["atividade"]["prazo"], "2024-12-01")
 
     def test_update_atividade(self):
+        # Test updating atividade
         query = f"""
             mutation {{
                 updateAtividade(id: {self.atividade1.id}, input: {{
@@ -506,7 +528,6 @@ class TestGraphql(TestCase):
             content_type=self.content_type,
         )
         content = json.loads(response.content)["data"]
-        print(content)
         self.assertIsNotNone(content["updateAtividade"])
         self.assertNotEqual(
             content["updateAtividade"]["atividade"]["descricao"],
@@ -518,6 +539,7 @@ class TestGraphql(TestCase):
         )
 
     def test_delete_atividade(self):
+        # Test deleting atividade
         query = f"""
             mutation {{
                 deleteAtividade(id: {self.atividade1.id}) {{
