@@ -1,0 +1,24 @@
+[run]
+# Include all files except those that are not relevant to tests
+include = */models.py, */viewsets.py, */serializers.py
+
+# Exclude files or directories from coverage
+omit =
+    */migrations/*
+    */__init__.py
+    */tests/*
+    */admin.py
+    */urls.py
+
+[report]
+# Exclude files from the coverage report
+exclude_lines =
+    pragma: no cover
+    if __name__ == '__main__':
+    raise NotImplementedError
+
+# Include or exclude specific file types from the report
+include = */models.py, */viewsets.py, */serializers.py
+
+[html]
+directory = coverage_html_report
