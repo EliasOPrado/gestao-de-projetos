@@ -26,7 +26,7 @@ class TestGraphql(TestCase):
             prazo=date(2024, 12, 31),
         )
         self.atividade1.save()
-    
+
     def get_object_or_none(self, model_class, **kwargs):
         try:
             return model_class.objects.get(**kwargs)
@@ -67,9 +67,7 @@ class TestGraphql(TestCase):
             }}
         """
         response = self.client.post(
-            self.url,
-            json.dumps({"query": query}),
-            content_type=self.content_type
+            self.url, json.dumps({"query": query}), content_type=self.content_type
         )
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["getCliente"])
@@ -98,9 +96,15 @@ class TestGraphql(TestCase):
         )
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["getProjetosByClienteId"])
-        self.assertEqual(content["getProjetosByClienteId"][0]["id"], str(self.projeto1.id))
-        self.assertEqual(content["getProjetosByClienteId"][0]["nome"],self.projeto1.nome)
-        self.assertEqual(content["getProjetosByClienteId"][0]["descricao"],self.projeto1.descricao)
+        self.assertEqual(
+            content["getProjetosByClienteId"][0]["id"], str(self.projeto1.id)
+        )
+        self.assertEqual(
+            content["getProjetosByClienteId"][0]["nome"], self.projeto1.nome
+        )
+        self.assertEqual(
+            content["getProjetosByClienteId"][0]["descricao"], self.projeto1.descricao
+        )
 
     def test_create_cliente(self):
         query = """
@@ -128,7 +132,9 @@ class TestGraphql(TestCase):
         self.assertIsNotNone(content["createCliente"])
         self.assertEqual(content["createCliente"]["cliente"]["nome"], "New Name")
         self.assertEqual(content["createCliente"]["cliente"]["telefone"], "+1234567890")
-        self.assertEqual(content["createCliente"]["cliente"]["email"], "newemail@example.com")
+        self.assertEqual(
+            content["createCliente"]["cliente"]["email"], "newemail@example.com"
+        )
 
     def test_update_cliente(self):
         query = f"""
@@ -154,9 +160,15 @@ class TestGraphql(TestCase):
         )
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["updateCliente"])
-        self.assertNotEqual(content["updateCliente"]["cliente"]["nome"], self.cliente1.nome)
-        self.assertNotEqual(content["updateCliente"]["cliente"]["email"], self.cliente1.email)
-        self.assertNotEqual(content["updateCliente"]["cliente"]["telefone"], self.cliente1.telefone)
+        self.assertNotEqual(
+            content["updateCliente"]["cliente"]["nome"], self.cliente1.nome
+        )
+        self.assertNotEqual(
+            content["updateCliente"]["cliente"]["email"], self.cliente1.email
+        )
+        self.assertNotEqual(
+            content["updateCliente"]["cliente"]["telefone"], self.cliente1.telefone
+        )
 
     def test_delete_cliente(self):
         query = f"""
@@ -202,10 +214,18 @@ class TestGraphql(TestCase):
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["allProjetos"])
         self.assertEqual(content["allProjetos"][0]["nome"], self.projeto1.nome)
-        self.assertEqual(content["allProjetos"][0]["descricao"], self.projeto1.descricao)
-        self.assertEqual(str.lower(content["allProjetos"][0]["status"]), self.projeto1.status)
-        self.assertEqual(content["allProjetos"][0]["cliente"]["id"], str(self.cliente1.id))
-        self.assertEqual(content["allProjetos"][0]["atividades"][0]["id"], str(self.atividade1.id))
+        self.assertEqual(
+            content["allProjetos"][0]["descricao"], self.projeto1.descricao
+        )
+        self.assertEqual(
+            str.lower(content["allProjetos"][0]["status"]), self.projeto1.status
+        )
+        self.assertEqual(
+            content["allProjetos"][0]["cliente"]["id"], str(self.cliente1.id)
+        )
+        self.assertEqual(
+            content["allProjetos"][0]["atividades"][0]["id"], str(self.atividade1.id)
+        )
 
     def test_get_atividades_by_projeto_id(self):
         query = f"""
@@ -229,11 +249,27 @@ class TestGraphql(TestCase):
         )
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["getAtividadesByProjetoId"])
-        self.assertEqual(content["getAtividadesByProjetoId"][0]["id"], str(self.atividade1.id))
-        self.assertEqual(content["getAtividadesByProjetoId"][0]["descricao"],self.atividade1.descricao)
-        self.assertEqual(datetime.fromisoformat(content["getAtividadesByProjetoId"][0]["dataCriacao"]),self.atividade1.data_criacao)  
-        self.assertEqual(content["getAtividadesByProjetoId"][0]["prazo"], self.atividade1.prazo.strftime("%Y-%m-%d"))  
-        self.assertEqual(content["getAtividadesByProjetoId"][0]["projeto"]["id"], str(self.projeto1.id))  
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["id"], str(self.atividade1.id)
+        )
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["descricao"],
+            self.atividade1.descricao,
+        )
+        self.assertEqual(
+            datetime.fromisoformat(
+                content["getAtividadesByProjetoId"][0]["dataCriacao"]
+            ),
+            self.atividade1.data_criacao,
+        )
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["prazo"],
+            self.atividade1.prazo.strftime("%Y-%m-%d"),
+        )
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["projeto"]["id"],
+            str(self.projeto1.id),
+        )
 
     def test_create_projeto(self):
         query = f"""
@@ -265,8 +301,12 @@ class TestGraphql(TestCase):
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["createProjeto"])
         self.assertEqual(content["createProjeto"]["projeto"]["nome"], "New Name")
-        self.assertEqual(content["createProjeto"]["projeto"]["descricao"], "New description")
-        self.assertEqual(str.lower(content["createProjeto"]["projeto"]["status"]), "em_andamento")
+        self.assertEqual(
+            content["createProjeto"]["projeto"]["descricao"], "New description"
+        )
+        self.assertEqual(
+            str.lower(content["createProjeto"]["projeto"]["status"]), "em_andamento"
+        )
 
     def test_update_projeto(self):
         query = f"""
@@ -298,11 +338,23 @@ class TestGraphql(TestCase):
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["updateProjeto"])
         self.assertEqual(content["updateProjeto"]["projeto"]["nome"], "Update Project")
-        self.assertEqual(content["updateProjeto"]["projeto"]["descricao"], "Update Project description")
-        self.assertEqual(str.lower(content["updateProjeto"]["projeto"]["status"]), "concluido")
-        self.assertNotEqual(content["updateProjeto"]["projeto"]["nome"], self.projeto1.nome)
-        self.assertNotEqual(content["updateProjeto"]["projeto"]["descricao"], self.projeto1.descricao)
-        self.assertNotEqual(str.lower(content["updateProjeto"]["projeto"]["status"]), self.projeto1.status)
+        self.assertEqual(
+            content["updateProjeto"]["projeto"]["descricao"],
+            "Update Project description",
+        )
+        self.assertEqual(
+            str.lower(content["updateProjeto"]["projeto"]["status"]), "concluido"
+        )
+        self.assertNotEqual(
+            content["updateProjeto"]["projeto"]["nome"], self.projeto1.nome
+        )
+        self.assertNotEqual(
+            content["updateProjeto"]["projeto"]["descricao"], self.projeto1.descricao
+        )
+        self.assertNotEqual(
+            str.lower(content["updateProjeto"]["projeto"]["status"]),
+            self.projeto1.status,
+        )
 
     def test_delete_projeto(self):
         query = f"""
@@ -349,7 +401,139 @@ class TestGraphql(TestCase):
         )
         content = json.loads(response.content)["data"]
         self.assertIsNotNone(content["allAtividades"])
-        self.assertEqual(content["allAtividades"][0]["descricao"], self.atividade1.descricao)
-        self.assertEqual(datetime.fromisoformat(content["allAtividades"][0]["dataCriacao"]), self.atividade1.data_criacao)
-        self.assertEqual(content["allAtividades"][0]["prazo"], self.atividade1.prazo.strftime("%Y-%m-%d"))
-    
+        self.assertEqual(
+            content["allAtividades"][0]["descricao"], self.atividade1.descricao
+        )
+        self.assertEqual(
+            datetime.fromisoformat(content["allAtividades"][0]["dataCriacao"]),
+            self.atividade1.data_criacao,
+        )
+        self.assertEqual(
+            content["allAtividades"][0]["prazo"],
+            self.atividade1.prazo.strftime("%Y-%m-%d"),
+        )
+
+    def testget_atividades_by_projeto_id(self):
+        query = f"""
+            query {{
+                getAtividadesByProjetoId(projetoId:{self.projeto1.id}){{
+                    id
+                    descricao
+                    dataCriacao
+                    prazo
+                }}
+            }}
+        """
+        response = self.client.post(
+            self.url,
+            json.dumps({"query": query}),
+            content_type=self.content_type,
+        )
+        content = json.loads(response.content)["data"]
+        self.assertIsNotNone(content["getAtividadesByProjetoId"])
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["descricao"],
+            self.atividade1.descricao,
+        )
+        self.assertEqual(
+            datetime.fromisoformat(
+                content["getAtividadesByProjetoId"][0]["dataCriacao"]
+            ),
+            self.atividade1.data_criacao,
+        )
+        self.assertEqual(
+            content["getAtividadesByProjetoId"][0]["prazo"],
+            self.atividade1.prazo.strftime("%Y-%m-%d"),
+        )
+
+    def test_create_atividade(self):
+        query = f"""
+                mutation {{
+                    createAtividade(input: {{
+                        descricao: "New description",  
+                        prazo: "2024-12-01"  
+                        projetoId: "{self.projeto1.id}"  
+                        }}) {{
+                        atividade {{
+                            id
+                            descricao
+                            prazo
+                            dataCriacao
+                            projeto {{
+                                id
+                                nome
+                            }}
+                        }}
+                    }}
+                }}
+            """
+        response = self.client.post(
+            self.url,
+            json.dumps({"query": query}),
+            content_type=self.content_type,
+        )
+        content = json.loads(response.content)["data"]
+        self.assertIsNotNone(content["createAtividade"])
+        self.assertEqual(
+            content["createAtividade"]["atividade"]["descricao"], "New description"
+        )
+        self.assertEqual(content["createAtividade"]["atividade"]["prazo"], "2024-12-01")
+
+    def test_update_atividade(self):
+        query = f"""
+            mutation {{
+                updateAtividade(id: {self.atividade1.id}, input: {{
+                    descricao: "Updated description",
+                    prazo: "2024-12-02" 
+                    projetoId: "{self.projeto1.id}"  
+                    }}) {{
+                        atividade {{
+                            id
+                            descricao
+                            prazo
+                            dataCriacao
+                            projeto {{
+                                id
+                                nome
+                            }}
+                        }}
+                    }}
+                }}
+            """
+        response = self.client.post(
+            self.url,
+            json.dumps({"query": query}),
+            content_type=self.content_type,
+        )
+        content = json.loads(response.content)["data"]
+        print(content)
+        self.assertIsNotNone(content["updateAtividade"])
+        self.assertNotEqual(
+            content["updateAtividade"]["atividade"]["descricao"],
+            self.atividade1.descricao,
+        )
+        self.assertNotEqual(
+            content["updateAtividade"]["atividade"]["prazo"],
+            self.atividade1.prazo.strftime("%Y-%m-%d"),
+        )
+
+    def test_delete_atividade(self):
+        query = f"""
+            mutation {{
+                deleteAtividade(id: {self.atividade1.id}) {{
+                    success
+                }}
+            }}
+        """
+        response = self.client.post(
+            self.url,
+            json.dumps({"query": query}),
+            content_type=self.content_type,
+        )
+        content = json.loads(response.content)["data"]
+        check_deleted_atividade = self.get_object_or_none(
+            Atividade, id=self.atividade1.id
+        )
+        self.assertEqual(check_deleted_atividade, None)
+        self.assertIsNotNone(content["deleteAtividade"])
+        self.assertEqual(content["deleteAtividade"]["success"], True)
