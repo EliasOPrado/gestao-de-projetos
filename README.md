@@ -14,7 +14,7 @@ O projeto pode ser iniciado de duas formas:
 
 Para iniciar o projeto voce precisa fazer alguns passos:
 1. Criar um arquivo `.env` no root da aplicação
-2. Copiar o conteudo de `contrib/env_example.txt`. 
+2. Copiar o conteudo de `contrib/.env_example`. 
 3. Ao ter um arquivo `.env` com as credencias do banco de dados rode o seguinte comando:
 ```bash
 docker compose up --build
@@ -24,13 +24,12 @@ A aplicação ira rodar na porta `8000`
 ### 2. Usando Comando Padrão Do Django
 
 Caso voce queira usar o comando padrão do django voce terá que seguir alguns passos:
-1. Crie e ative um ambiente virtual
+1. Copie o codigo `DATABASES` do arquivo `contrib/sqlite_db_setting.txt` e substitua pelo que esta default.
+2. Crie e ative um ambiente virtual
 `python3 -m venv venv && source venv/bin/activate`
-
-2. Ao criar e ativar o ambiente, e necessario instalar os pacotes.
+3. Ao criar e ativar o ambiente, e necessario instalar os pacotes.
 `pip install -r requirements.txt`
-
-3. Ao instalar as dependencias voce estara pronto para rodar o projeto usando o comando padrao do django.
+4. Ao instalar as dependencias voce estara pronto para rodar o projeto usando o comando padrao do django.
 `python manage.py runserver`
 
 ## Funcionalidades
