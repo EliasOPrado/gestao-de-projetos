@@ -1,6 +1,6 @@
 [run]
 # Include all files except those that are not relevant to tests
-include = */models.py, */viewsets.py, */serializers.py
+include = */models.py, */viewsets.py, */serializers.py, */queries.py, */mutations.py
 
 # Exclude files or directories from coverage
 omit =
@@ -18,7 +18,7 @@ exclude_lines =
     raise NotImplementedError
 
 # Include or exclude specific file types from the report
-include = */models.py, */viewsets.py, */serializers.py
+include = */models.py, */viewsets.py, */serializers.py, */queries.py, */mutations.py
 
 [html]
 directory = coverage_html_report
