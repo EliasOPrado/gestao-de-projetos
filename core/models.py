@@ -3,6 +3,9 @@ from django.core.validators import RegexValidator
 
 
 class Cliente(models.Model):
+    """
+    Model that represents Cliente data
+    """
     phone_regex = RegexValidator(
         regex=r"^\+\d{9,20}$",
         message="Phone number must be entered in the format: '+999999999'. Up to 20 digits allowed.",
@@ -18,6 +21,9 @@ class Cliente(models.Model):
 
 
 class Projeto(models.Model):
+    """
+    Model that represents Projet data
+    """
     STATUS_CHOICES = [
         ("em_andamento", "Em Andamento"),
         ("concluido", "Concluído"),
@@ -37,6 +43,9 @@ class Projeto(models.Model):
 
 
 class Atividade(models.Model):
+    """
+    Model that represents Atividade data
+    """
     projeto = models.ForeignKey(
         Projeto, on_delete=models.CASCADE, related_name="atividades"
     )
