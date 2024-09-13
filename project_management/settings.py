@@ -85,27 +85,16 @@ WSGI_APPLICATION = "project_management.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-if "DATABASE_URL" in os.environ:
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": env("POSTGRES_DB"),
-            "USER": env("POSTGRES_USER"),
-            "PASSWORD": env("POSTGRES_PASSWORD"),
-            "HOST": env("POSTGRES_HOST"),
-            "PORT": env("POSTGRES_PORT"),
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
     }
-else:
-    print("Postgres URL not found, using sqlite instead")
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
+}
 
 
 # Password validation

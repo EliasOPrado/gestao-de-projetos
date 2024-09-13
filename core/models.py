@@ -1,10 +1,17 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class Cliente(models.Model):
+    phone_regex = RegexValidator(
+        regex=r"^\+\d{9,20}$",
+        message="Phone number must be entered in the format: '+999999999'. Up to 20 digits allowed.",
+    )
     nome = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    telefone = models.CharField(max_length=20, blank=True, null=True)
+    telefone = models.CharField(
+        validators=[phone_regex], max_length=20, blank=True, null=True
+    )
 
     def __str__(self):
         return self.nome

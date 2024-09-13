@@ -30,7 +30,7 @@ class TestApi(APITestCase):
         self.cliente_data = {
             "nome": "Joao 123",
             "email": "joao123@email.com",
-            "telefone": "551198048399",
+            "telefone": "+551198048399",
         }
 
         self.projeto_data = {
@@ -72,12 +72,27 @@ class TestApi(APITestCase):
         self.assertTrue(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    def test_create_cliente_with_wrong_telefone(self):
+        """Test if POST requirest is returning 400"""
+        data = {
+            "nome": "Joao 123",
+            "email": "joao123@email.com",
+            "telefone": "ABCDEF",
+        }
+        response = self.client.post(self.cliente_list, data, format="json")
+        response_data = response.json()
+        self.assertEqual(
+            response_data["telefone"][0],
+            "Phone number must be entered in the format: '+999999999'. Up to 20 digits allowed.",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_update_cliente(self):
         """Test if UPDATE is returning 200 and data is updated."""
         data = {
             "nome": "Joao 123 UPDATED",
             "email": "new_joao123@email.com",
-            "telefone": "551198048388",
+            "telefone": "+551198048388",
         }
         response = self.client.put(
             self.cliente_detail, data, format="json", headers=self.headerInfo
